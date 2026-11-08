@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HumanEval Studio · Multi-Turn Conversation Review & RLHF Annotation</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="brand">
+      <span class="badge-logo">HE</span>
+      <div>
+        <h1>HumanEval Studio</h1>
+        <small>RLHF & Multi-Turn Conversation Annotation Platform</small>
+      </div>
+    </div>
+    <div class="actions-top">
+      <select id="benchmark-select" class="select-box">
+        <option value="">Load Benchmark Scenario…</option>
+      </select>
+      <button id="btn-export-jsonl" class="btn btn-secondary">💾 Export JSONL Dataset</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Left Column: Conversation Transcript -->
+    <section class="transcript-pane">
+      <div class="pane-head">
+        <h2>Dialogue Transcript</h2>
+        <span id="turn-badge" class="pill">0 Turns</span>
+      </div>
+      <div id="chat-thread" class="chat-thread">
+        <div class="empty-state">Select a benchmark dialogue above or paste a transcript to begin review.</div>
+      </div>
+    </section>
+
+    <!-- Right Column: Rubric & Annotation Workbench -->
+    <section class="review-pane">
+      <div class="pane-head">
+        <h2>Annotation & Rubric Scoring</h2>
+        <span id="quality-tier" class="pill tier-pill">UNRATED</span>
+      </div>
+
+      <div class="form-group">
+        <label>Overall Likert Rating (1 = Defective, 5 = Flawless)</label>
+        <div class="rating-stars" id="overall-rating-buttons">
+          <button type="button" class="star-btn" data-val="1">1</button>
+          <button type="button" class="star-btn" data-val="2">2</button>
+          <button type="button" class="star-btn" data-val="3">3</button>
+          <button type="button" class="star-btn active" data-val="4">4</button>
+          <button type="button" class="star-btn" data-val="5">5</button>
+        </div>
+      </div>
+
+      <!-- Failure Category Tags -->
+      <div class="form-group">
+        <label>Failure Categories (Tag if applicable)</label>
+        <div class="tag-selector" id="failure-tags">
+          <span class="tag-chip" data-tag="hallucination">Hallucination</span>
+          <span class="tag-chip" data-tag="instruction_violation">Instruction Violation</span>
+          <span class="tag-chip" data-tag="sycophancy">Sycophancy</span>
+          <span class="tag-chip" data-tag="unnatural_tone">Unnatural Tone</span>
+          <span class="tag-chip" data-tag="over_refusal">Over Refusal</span>
+          <span class="tag-chip" data-tag="formatting_error">Formatting Error</span>
+          <span class="tag-chip" data-tag="reasoning_error">Reasoning Error</span>
+          <span class="tag-chip" data-tag="ungrounded_assertion">Ungrounded Assertion</span>
+        </div>
+      </div>
+
+      <!-- Rubric Dimensions -->
+      <div class="form-group">
+        <label>Dimension Scores (1-5)</label>
+        <div id="rubric-list" class="rubric-grid"></div>
+      </div>
+
+      <div class="form-group">
+        <label for="evidence-quote">Evidence Quote (Exact text from dialogue)</label>
+        <input id="evidence-quote" class="text-input" placeholder="e.g. 'Breaking a 500mg adult tablet in half...'" />
+      </div>
+
+      <div class="form-group">
+        <label for="reviewer-notes">Reviewer Actionable Rationale (min. 10 chars)</label>
+        <textarea id="reviewer-notes" rows="3" class="text-input" placeholder="Explain what made this response good or poor with concrete reasoning..."></textarea>
+      </div>
+
+      <div class="action-buttons">
+        <button id="btn-submit-review" class="btn btn-primary">Submit Annotation & Score</button>
+        <button id="btn-download-md" class="btn btn-secondary" hidden>📄 Download Audit Report (.md)</button>
+        <button id="btn-download-dpo" class="btn btn-secondary" hidden>🔄 Download DPO Pair (.json)</button>
+      </div>
+
+      <div id="submission-result" class="result-card" hidden></div>
+    </section>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>
